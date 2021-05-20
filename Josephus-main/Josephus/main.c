@@ -22,7 +22,7 @@ int gerarNumero(){
     int x;
     //eu botei 10 pois ele vai gera numeros de 0 a 10,
     //e como so vai ter 10 participantes
-    x = rand()%10;
+    x = rand()%5;
 
     return x;
 }
@@ -33,29 +33,29 @@ void removerInicio(tipoLista *lista){ // remove do inicio
    tipoNo *que_sera_apagado;
    que_sera_apagado = lista->fim->proxNo;
    lista->fim->proxNo= lista->fim->proxNo->proxNo; // inicio aponta para o proximo dele
-   lista-:
+
    if(lista->qtdade==1){
        lista->fim = NULL;
    lista->qtdade--;
    free(que_sera_apagado);
 }
-
-void removerFim(tipoLista *lista){ // Funcao para remover do final
-   tipoNo *atual, *anterior;
-   atual = lista->fim->proxNo;
-
-   if(lista->qtdade==1){
-      lista->fim = NULL;
-      lista->qtdade--;
-   }else{
-      while(atual != atual->proxNo){
-          anterior = atual;
-          atual = atual->proxNo;
-      }
-      anterior->proxNo = atual->proxNo;
-   lista->fim = anterior;
-   }
-   free(atual);
+}
+void removeDoFim(tipoLista *listaEnc){
+    tipoNo *atual, *antigo;
+    atual = listaEnc->fim->proxNo;
+    if(atual->proxNo == atual){
+        listaEnc->fim = NULL;
+        listaEnc->qtdade--;
+    }
+    else{
+     while(atual!=listaEnc->fim){
+            antigo = atual;
+            atual= atual->proxNo;
+        }
+        antigo->proxNo=antigo->proxNo->proxNo; /* ou recebe listaEnc->fim->proxNo;*/
+        listaEnc->fim=antigo;
+    }
+    free(atual);
 }
 
 void removerDeterminadaPosicao(tipoLista *listt, int pos){ // CASA
@@ -65,15 +65,18 @@ void removerDeterminadaPosicao(tipoLista *listt, int pos){ // CASA
        if(pos==1){
           removerInicio(listt); //++++
        }else if(pos==listt->qtdade){
-            removerFim(listt);
+            removeDoFim(listt);
        }else{
-          for(int x=1; x<=(pos-1); x++){
+          for(int x=1; x<=pos; x++){
               anterior=atual;
               atual=atual->proxNo;
           }
 
           anterior->proxNo = atual->proxNo;
        }
+   }
+   if(listt->qtdade == 1){
+    printf("\nnome do Vencedor: %s \n", atual -> nome);
    }
    printf("\nnome: %s \n", atual -> nome);
    free(atual);
@@ -82,22 +85,21 @@ void removerDeterminadaPosicao(tipoLista *listt, int pos){ // CASA
 int InserirFrente(tipoLista *lista, char nome[20]){
 
     tipoNo *novoNome;
-    novoNome = (tipoNo *) malloc(sizeof(novoNome));
+    novoNome = (tipoNo *) malloc(sizeof(tipoNo));
     if(lista->fim == NULL){
         inserirListaVazia(lista, nome);
     }
     else{
-        if(novoNome == NULL){
+        if(novoNome == NULL)
             return 0;
-        }
-        else{
+
+
             strcpy(novoNome->nome, nome);
             novoNome->proxNo = lista->fim->proxNo;
             lista->fim->proxNo = novoNome;
             lista->qtdade++;
 
             return 1;
-        }
 
     }
 
@@ -163,23 +165,29 @@ int main(){
             else
                 printf("\nInsercao nao efetuada");
             break;
-        case 4:
-            //so pra testar a funcao
-            numAleatorio = gerarNumero();
-            printf("numero: %d", numAleatorio);
-            break;
         case 5:
-            printf("Digite uma posicao que deseja remover");
+            printf("\ndigite um numero");
             scanf("%d", &x);
             removerDeterminadaPosicao(&lista, x);
+            break;
         case 9:
             mostrarLista(&lista);
             break;
-        case 0: printf("\nEncerrando programa");
+        case 0:
+            printf("\nEncerrando programa, Voce vai para o sorteio");
             //destruirLista(&lista);
             break;
         default: printf("\nOpcao invalida!");
         }
     }while(op != 0);
-    return 0;
+     /*
+     x = 5;
+     while(x > 0){
+     numAleatorio = gerarNumero();
+     removerDeterminadaPosicao(&lista, numAleatorio);
+
+     x--;
+     }
+     */
+     return 0;
 }
