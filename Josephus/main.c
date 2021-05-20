@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 typedef struct no{
-   char *nome;
+   char nome[20];
    struct no *proxNo;
 }tipoNo;
 
@@ -16,7 +16,7 @@ void inicializarLista(tipoLista *lista){
     lista->qtdade = 0;
 }
 
-int inserirListaVazia(tipoLista *lista, char *nome){
+int inserirListaVazia(tipoLista *lista, char nome){
     tipoNo *novoNome;
     novoNome = (tipoNo *) malloc(sizeof(novoNome));
 
@@ -57,9 +57,9 @@ int main(){
         scanf("%d",&op);
         switch(op){
         case 1:
-            printf("\nDigite outro numero inteiro:");
-            gets(aux);
-            if(inserirListaVazia(&lista,&aux);
+            printf("\nDigite o nome do participante:");
+           gets(aux);
+            if(inserirListaVazia(&lista,aux);
                 printf("\nDado inserido com sucesso");
             else
                 printf("\nInsercao nao efetuada");
