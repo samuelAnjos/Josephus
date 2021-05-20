@@ -26,14 +26,46 @@ int gerarNumero(){
 
     return x;
 }
+
+// feita hoje
+
+void removerInicio(tipoLista *lista){ // remove do inicio
+   tipoNo *que_sera_apagado;
+   que_sera_apagado = lista->fim->proxNo;
+   lista->fim->proxNo= lista->fim->proxNo->proxNo; // inicio aponta para o proximo dele
+   lista-:
+   if(lista->qtdade==1){
+       lista->fim = NULL;
+   lista->qtdade--;
+   free(que_sera_apagado);
+}
+
+void removerFim(tipoLista *lista){ // Funcao para remover do final
+   tipoNo *atual, *anterior;
+   atual = lista->fim->proxNo;
+
+   if(lista->qtdade==1){
+      lista->fim = NULL;
+      lista->qtdade--;
+   }else{
+      while(atual != atual->proxNo){
+          anterior = atual;
+          atual = atual->proxNo;
+      }
+      anterior->proxNo = atual->proxNo;
+   lista->fim = anterior;
+   }
+   free(atual);
+}
+
 void removerDeterminadaPosicao(tipoLista *listt, int pos){ // CASA
    tipoNo *anterior, *atual;
    atual = listt->fim ->proxNo;
    if(pos > 0 && pos<= listt->qtdade){
        if(pos==1){
-          //removePrimeiroElemento(listt); //++++
+          removerInicio(listt); //++++
        }else if(pos==listt->qtdade){
-            //removerFim(listt);
+            removerFim(listt);
        }else{
           for(int x=1; x<=(pos-1); x++){
               anterior=atual;
