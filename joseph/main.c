@@ -17,19 +17,19 @@ void inicializarLista(tipoLista *lista){
     lista->qtdade = 0;
 }
 
-int gerarNumero(){
-    srand(time(NULL));
+int gerarNumero(tipoLista *lista){
+    srand((unsigned)time(NULL));
     int x;
     //foi colocando 10 pois ele vai gera numeros de 0 a 10,
     //e como so vai ter 10 participantes
-    x = rand()%10;
+    x = rand()%(lista->qtdade);
 
     return x;
 }
 
 // feita hoje
 
-char* removerInicio(tipoLista *lista){ // remove do inicio
+tipoNo* removerInicio(tipoLista *lista){ // remove do inicio
    tipoNo *que_sera_apagado;
    que_sera_apagado = lista->fim->proxNo;
    lista->fim->proxNo= lista->fim->proxNo->proxNo; // inicio aponta para o proximo dele
@@ -38,7 +38,7 @@ char* removerInicio(tipoLista *lista){ // remove do inicio
    return que_sera_apagado;
 }
 
-char* removerFim(tipoLista *lista){
+tipoNo* removerFim(tipoLista *lista){
    tipoNo *atual, *anterior;
    atual = lista->fim->proxNo;
 
@@ -74,7 +74,12 @@ void removerDeterminadaPosicao(tipoLista *listt, int pos){
       }
 
    } //if geral
+   if(listt->qtdade == 1){
+    printf("\nVencedor: %s \n", atual->nome);
+   }
+   if(listt->qtdade != 1){
     printf("\nnome: %s \n", atual->nome);
+   }
     free(atual);
     listt->qtdade--;
 }
@@ -136,10 +141,8 @@ int main(){
         printf("\n1 - Inserir Lista Vazia");
         printf("\n2 - Insere na frente");
         //n3 - Insere no fim");
-        printf("\n4 - Gerar numero");
-        printf("\n5- remover da posicao");
         printf("\n9 - Exibe a lista");
-        printf("\n0 - Sai do programa");
+        printf("\n0 - Sai do programa, e vai para o sorteio");
         printf("\nDigite sua opcao:");
         scanf("%d",&op);
         switch(op){
@@ -160,24 +163,31 @@ int main(){
             else
                 printf("\nInsercao nao efetuada");
             break;
-        case 4:
-            //so pra testar a funcao
-            numAleatorio = gerarNumero();
-            printf("numero: %d", numAleatorio);
-            break;
+        /*
         case 5:
-            printf("Digite uma posicao que deseja remover: ");
+            printf("digite um numero:");
             scanf("%d", &x);
-            removerDeterminadaPosicao(&lista, x);
+            removerDeterminadaPosicao(&lista,x);
+            break;
+        */
+
         case 9:
             mostrarLista(&lista);
             break;
         case 0: printf("\nEncerrando programa");
-
             break;
         default: printf("\nOpcao invalida!");
         }
     }while(op != 0);
+
+
+    x = lista.qtdade;
+    while(x > 0){
+        numAleatorio = gerarNumero(&lista);
+        removerDeterminadaPosicao(&lista,numAleatorio);
+        x--;
+    }
+
 
 }
 
